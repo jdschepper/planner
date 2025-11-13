@@ -22,6 +22,11 @@
         
         <div id="info" class="info"></div>
         
+        <div class="form-group">
+            <label for="configName">Configuratie naam:</label>
+            <input type="text" id="configName" placeholder="Geef je configuratie een naam (bijv. verjaardagsfeest)" value="">
+        </div>
+        
         <div class="controls">
             <input type="file" id="fileInput" accept=".json,application/json">
             <button class="btn btn-primary" onclick="addEvent()">➕ Nieuwe Gebeurtenis</button>
@@ -43,10 +48,12 @@
     <script>
         let events = [];
         let editingIndex = -1;
+        let configName = '';
         
         const fileInput = document.getElementById('fileInput');
         const eventsList = document.getElementById('eventsList');
         const infoDiv = document.getElementById('info');
+        const configNameInput = document.getElementById('configName');
         
         // File input handler
         fileInput.addEventListener('change', async (e) => {
@@ -55,7 +62,20 @@
             
             try {
                 const content = await file.text();
-                events = JSON.parse(content);
+                const jsonData = JSON.parse(content);
+                
+                // Check if data has config_name property (new format)
+                if (jsonData.config_name !== undefined && Array.isArray(jsonData.events)) {
+                    configName = jsonData.config_name;
+                    events = jsonData.events;
+                } else {
+                    // Old format - just array of events
+                    events = jsonData;
+                    // Extract filename without extension as config name
+                    configName = file.name.replace(/\.json$/i, '');
+                }
+                
+                configNameInput.value = configName;
                 showInfo('JSON bestand succesvol geladen!', 'success');
                 renderEvents();
             } catch (error) {
@@ -256,12 +276,25 @@
                 return;
             }
             
-            const jsonString = JSON.stringify(events, null, '\t');
+            // Get the config name from input
+            configName = configNameInput.value.trim() || 'data';
+            
+            // Create new format with config_name
+            const jsonData = {
+                config_name: configName,
+                events: events
+            };
+            
+            const jsonString = JSON.stringify(jsonData, null, '\t');
             const blob = new Blob([jsonString], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
             const link = document.createElement('a');
             link.href = url;
-            link.download = 'data.json';
+            
+            // Use config name as filename (sanitize it)
+            const safeFileName = configName.replace(/[^a-z0-9_\-]/gi, '_').toLowerCase();
+            link.download = `${safeFileName}.json`;
+            
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);

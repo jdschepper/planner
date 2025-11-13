@@ -1,23 +1,26 @@
-[
-	{
-		"dagen_op_voorhand" : 14,
-		"activiteit_naam" : "Medewerkers mailen",
-		"start_uur" : "13:00",
-		"eind_uur" : "14:00",
-		"beschrijving" : "We moeten de speelnest medewerkers mailen met het volgende:\n- Wie er komt\n- Hoe laat ze komen\n- Wat hun lievelingskleur is"
-	},
-	{
-		"dagen_op_voorhand" : 3,
-		"activiteit_naam" : "Opbouw Speelnestje",
-		"start_uur" : "18:00",
-		"eind_uur" : "19:00",
-		"beschrijving" : ""
-	},
-	{
-		"dagen_op_voorhand" : 0,
-		"activiteit_naam" : "Start Speelnestje",
-		"start_uur" : "",
-		"eind_uur" : "",
-		"beschrijving" : ""
-	}
-]
+{
+	"config_name": "speelnestje",
+	"events": [
+		{
+			"dagen_op_voorhand" : 14,
+			"activiteit_naam" : "Medewerkers mailen",
+			"start_uur" : "13:00",
+			"eind_uur" : "14:00",
+			"beschrijving" : "We moeten de speelnest medewerkers mailen met het volgende:\n- Wie er komt\n- Hoe laat ze komen\n- Wat hun lievelingskleur is"
+		},
+		{
+			"dagen_op_voorhand" : 3,
+			"activiteit_naam" : "Opbouw Speelnestje",
+			"start_uur" : "18:00",
+			"eind_uur" : "19:00",
+			"beschrijving" : ""
+		},
+		{
+			"dagen_op_voorhand" : 0,
+			"activiteit_naam" : "Start Speelnestje",
+			"start_uur" : "",
+			"eind_uur" : "",
+			"beschrijving" : ""
+		}
+	]
+}

@@ -131,8 +131,20 @@
             try {
                 // Read the selected file
                 const fileContent = await file.text();
-                const data = JSON.parse(fileContent);
+                const jsonData = JSON.parse(fileContent);
                 const targetDate = new Date(targetDateValue + 'T00:00:00');
+                
+                // Check if data has config_name property (new format)
+                let data, configName;
+                if (jsonData.config_name !== undefined && Array.isArray(jsonData.events)) {
+                    configName = jsonData.config_name;
+                    data = jsonData.events;
+                } else {
+                    // Old format - just array of events
+                    data = jsonData;
+                    // Extract filename without extension as config name
+                    configName = file.name.replace(/\.json$/i, '');
+                }
                 
                 // Display events preview
                 displayEvents(data, targetDate);
@@ -185,7 +197,11 @@
                 const url = window.URL.createObjectURL(blob);
                 const link = document.createElement('a');
                 link.href = url;
-                link.download = `planner_${formatDateToICS(targetDate)}.ics`;
+                
+                // Use config name as prefix for ICS file
+                const safeConfigName = configName.replace(/[^a-z0-9_\-]/gi, '_').toLowerCase();
+                link.download = `${safeConfigName}_${formatDateToICS(targetDate)}.ics`;
+                
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
