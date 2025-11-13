@@ -1,0 +1,30 @@
+[
+	{
+		"dagen_op_voorhand" : 0,
+		"activiteit_naam" : "Evenement",
+		"start_uur" : "",
+		"eind_uur" : "",
+		"beschrijving" : "Dit is een volledige dag evenement"
+	},
+	{
+		"dagen_op_voorhand" : 7,
+		"activiteit_naam" : "Een Week Ervoor",
+		"start_uur" : "12:30",
+		"eind_uur" : "13:00",
+		"beschrijving" : ""
+	},
+	{
+		"dagen_op_voorhand" : 14,
+		"activiteit_naam" : "Twee Weken Ervoor",
+		"start_uur" : "09:00",
+		"eind_uur" : "10:00",
+		"beschrijving" : "Beschrijving Regel 1 \nBeschrijving Regel 2 \nBeschrijving Regel 3"
+	},
+	{
+		"dagen_op_voorhand" : -7,
+		"activiteit_naam" : "Een week erna",
+		"start_uur" : "",
+		"eind_uur" : "",
+		"beschrijving" : "Zou alles goed verlopen zijn?"
+	}
+]
