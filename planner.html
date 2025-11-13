@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planner - ICS Generator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 0;
+        }
+        
+        .nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 15px 0;
+            margin-bottom: 20px;
+        }
+        
+        .nav-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            padding: 0 20px;
+        }
+        
+        .nav-link {
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .nav-link:not(.active) {
+            background: #f0f0f0;
+            color: #555;
+        }
+        
+        .nav-link:not(.active):hover {
+            background: #e0e0e0;
+            transform: translateY(-2px);
+        }
+        
+        .nav-link.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .content-wrapper {
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 900px;
+            width: 100%;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+            font-size: 14px;
+        }
+        
+        input[type="date"],
+        input[type="file"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input[type="date"]:focus,
+        input[type="file"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        input[type="file"] {
+            padding: 10px;
+            cursor: pointer;
+        }
+        
+        input[type="file"]::file-selector-button {
+            padding: 8px 16px;
+            border: none;
+            background: #667eea;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+            font-size: 14px;
+        }
+        
+        input[type="file"]::file-selector-button:hover {
+            background: #5568d3;
+        }
+        
+        button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .info {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f5f5f5;
+            border-radius: 6px;
+            font-size: 13px;
+            color: #666;
+            display: none;
+        }
+        
+        .info.show {
+            display: block;
+        }
+        
+        .info.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .info.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .event-list {
+            margin-top: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .event-item {
+            padding: 10px;
+            background: #f9f9f9;
+            border-left: 3px solid #667eea;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+        
+        .event-item strong {
+            color: #333;
+            display: block;
+            margin-bottom: 3px;
+        }
+        
+        .event-item small {
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav-container">
+            <a href="planner.html" class="nav-link active">📅 Planner</a>
+            <a href="editor.html" class="nav-link">📝 Editor</a>
+            <a href="handleiding.html" class="nav-link">📚 Handleiding</a>
+        </div>
+    </nav>
+    
+    <div class="content-wrapper">
+        <div class="container">
+            <h1>📅 Planner</h1>
+            <p class="subtitle">Genereer een ICS bestand op basis van een gekozen datum</p>
+        
+        <div class="form-group">
+            <label for="dataFile">Selecteer json bestand:</label>
+            <input type="file" id="dataFile" accept=".json,application/json" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="targetDate">Kies de startdatum van het evenement:</label>
+            <input type="date" id="targetDate" required>
+        </div>
+        
+        <button id="generateBtn">Genereer ICS Bestand</button>
+        
+        <div id="info" class="info"></div>
+        <div id="eventList" class="event-list"></div>
+    </div>
+
+    <script>
+        const fileInput = document.getElementById('dataFile');
+        const dateInput = document.getElementById('targetDate');
+        const generateBtn = document.getElementById('generateBtn');
+        const infoDiv = document.getElementById('info');
+        const eventListDiv = document.getElementById('eventList');
+        
+        // Set default date to today
+        dateInput.valueAsDate = new Date();
+        
+        // Function to format date to YYYYMMDD
+        function formatDateToICS(date) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}${month}${day}`;
+        }
+        
+        // Function to format datetime to ICS format (YYYYMMDDTHHMMSS)
+        function formatDateTimeToICS(date, time) {
+            const dateStr = formatDateToICS(date);
+            const timeParts = time.split(':');
+            const hours = timeParts[0].padStart(2, '0');
+            const minutes = timeParts[1].padStart(2, '0');
+            return `${dateStr}T${hours}${minutes}00`;
+        }
+        
+        // Function to escape ICS text
+        function escapeICSText(text) {
+            return text.replace(/\\/g, '\\\\')
+                      .replace(/;/g, '\\;')
+                      .replace(/,/g, '\\,')
+                      .replace(/\n/g, '\\n');
+        }
+        
+        // Function to show info message
+        function showInfo(message, type = 'success') {
+            infoDiv.textContent = message;
+            infoDiv.className = `info show ${type}`;
+            setTimeout(() => {
+                infoDiv.className = 'info';
+            }, 5000);
+        }
+        
+        // Function to display events preview
+        function displayEvents(events, targetDate) {
+            eventListDiv.innerHTML = '<h3 style="margin-bottom: 10px; color: #333; font-size: 16px;">Gebeurtenissen:</h3>';
+            
+            events.forEach(event => {
+                const eventDate = new Date(targetDate);
+                eventDate.setDate(eventDate.getDate() - event.dagen_op_voorhand);
+                
+                const eventDiv = document.createElement('div');
+                eventDiv.className = 'event-item';
+                
+                const timeInfo = event.start_uur && event.eind_uur 
+                    ? `${event.start_uur} - ${event.eind_uur}`
+                    : 'Hele dag';
+                
+                const dateStr = eventDate.toLocaleDateString('nl-NL', { 
+                    weekday: 'short', 
+                    year: 'numeric', 
+                    month: 'short', 
+                    day: 'numeric' 
+                });
+                
+                const description = event.beschrijving ? `<br><small style="color: #888;">${escapeICSText(event.beschrijving).replace(/\\n/g, '<br/>')}</small>` : '';
+                
+                eventDiv.innerHTML = `
+                    <strong>${escapeICSText(event.activiteit_naam)}</strong>
+                    <small>${dateStr} • ${timeInfo}</small>${description}
+                `;
+                
+                eventListDiv.appendChild(eventDiv);
+            });
+        }
+        
+        // Function to generate ICS file
+        async function generateICS() {
+            const targetDateValue = dateInput.value;
+            const file = fileInput.files[0];
+            
+            if (!file) {
+                showInfo('Selecteer eerst een JSON bestand!', 'error');
+                return;
+            }
+            
+            if (!targetDateValue) {
+                showInfo('Selecteer eerst een datum!', 'error');
+                return;
+            }
+            
+            try {
+                // Read the selected file
+                const fileContent = await file.text();
+                const data = JSON.parse(fileContent);
+                const targetDate = new Date(targetDateValue + 'T00:00:00');
+                
+                // Display events preview
+                displayEvents(data, targetDate);
+                
+                // Generate ICS content
+                let icsContent = 'BEGIN:VCALENDAR\r\n';
+                icsContent += 'VERSION:2.0\r\n';
+                icsContent += 'PRODID:-//Planner//Event Generator//NL\r\n';
+                icsContent += 'CALSCALE:GREGORIAN\r\n';
+                icsContent += 'METHOD:PUBLISH\r\n';
+                
+                data.forEach((event, index) => {
+                    // Calculate event date (target date minus days before)
+                    const eventDate = new Date(targetDate);
+                    eventDate.setDate(eventDate.getDate() - event.dagen_op_voorhand);
+                    
+                    // Check if it's an all-day event
+                    const isAllDay = !event.start_uur || !event.eind_uur;
+                    
+                    icsContent += 'BEGIN:VEVENT\r\n';
+                    icsContent += `UID:${Date.now()}-${index}@planner\r\n`;
+                    icsContent += `DTSTAMP:${formatDateTimeToICS(new Date(), '00:00')}\r\n`;
+                    
+                    if (isAllDay) {
+                        // All-day event
+                        icsContent += `DTSTART;VALUE=DATE:${formatDateToICS(eventDate)}\r\n`;
+                        const endDate = new Date(eventDate);
+                        endDate.setDate(endDate.getDate() + 1);
+                        icsContent += `DTEND;VALUE=DATE:${formatDateToICS(endDate)}\r\n`;
+                    } else {
+                        // Timed event
+                        icsContent += `DTSTART:${formatDateTimeToICS(eventDate, event.start_uur)}\r\n`;
+                        icsContent += `DTEND:${formatDateTimeToICS(eventDate, event.eind_uur)}\r\n`;
+                    }
+                    
+                    icsContent += `SUMMARY:${escapeICSText(event.activiteit_naam)}\r\n`;
+                    
+                    // Add description if present
+                    if (event.beschrijving) {
+                        icsContent += `DESCRIPTION:${escapeICSText(event.beschrijving)}\r\n`;
+                    }
+                    
+                    icsContent += 'END:VEVENT\r\n';
+                });
+                
+                icsContent += 'END:VCALENDAR\r\n';
+                
+                // Create and download the file
+                const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+                const url = window.URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = `planner_${formatDateToICS(targetDate)}.ics`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                window.URL.revokeObjectURL(url);
+                
+                showInfo(`ICS bestand gegenereerd met ${data.length} gebeurtenis(sen)!`, 'success');
+                
+            } catch (error) {
+                console.error('Error:', error);
+                showInfo(`Fout: ${error.message}`, 'error');
+            }
+        }
+        
+        // Event listeners
+        generateBtn.addEventListener('click', generateICS);
+        
+        dateInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                generateICS();
+            }
+        });
+    </script>
+    </div>
+</body>
+</html>

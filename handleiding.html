@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Handleiding - Planner Systeem</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 0;
+            line-height: 1.6;
+        }
+        
+        .nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 15px 0;
+            margin-bottom: 20px;
+        }
+        
+        .nav-container {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            padding: 0 20px;
+        }
+        
+        .nav-link {
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .nav-link:not(.active) {
+            background: #f0f0f0;
+            color: #555;
+        }
+        
+        .nav-link:not(.active):hover {
+            background: #e0e0e0;
+            transform: translateY(-2px);
+        }
+        
+        .nav-link.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .content-wrapper {
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 50px;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 36px;
+            text-align: center;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 40px;
+            font-size: 16px;
+            text-align: center;
+        }
+        
+        h2 {
+            color: #667eea;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            font-size: 24px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        
+        h3 {
+            color: #555;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        
+        p {
+            color: #555;
+            margin-bottom: 15px;
+        }
+        
+        ul, ol {
+            margin-left: 20px;
+            margin-bottom: 20px;
+            color: #555;
+        }
+        
+        li {
+            margin-bottom: 10px;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 14px;
+            color: #d63384;
+        }
+        
+        .code-block {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 4px solid #667eea;
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+        
+        .code-block pre {
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 13px;
+            color: #333;
+        }
+        
+        .tip {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        
+        .tip strong {
+            color: #155724;
+        }
+        
+        .warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        
+        .warning strong {
+            color: #856404;
+        }
+        
+        .info {
+            background: #d1ecf1;
+            border-left: 4px solid #17a2b8;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        
+        .info strong {
+            color: #0c5460;
+        }
+        
+        .step {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            border-left: 4px solid #764ba2;
+        }
+        
+        .step-number {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        .file-link {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            margin: 10px 10px 10px 0;
+            font-weight: 600;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .file-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .files-section {
+            text-align: center;
+            margin: 30px 0;
+            padding: 20px;
+            background: #f0f4ff;
+            border-radius: 8px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        th {
+            background: #667eea;
+            color: white;
+            font-weight: 600;
+        }
+        
+        tr:hover {
+            background: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav-container">
+            <a href="planner.html" class="nav-link">📅 Planner</a>
+            <a href="editor.html" class="nav-link">📝 Editor</a>
+            <a href="handleiding.html" class="nav-link active">📚 Handleiding</a>
+        </div>
+    </nav>
+    
+    <div class="content-wrapper">
+        <div class="container">
+            <h1>📚 Handleiding</h1>
+            <p class="subtitle">Complete gids voor het Planner Systeem</p>
+        
+        <h2>📋 Overzicht</h2>
+        <p>
+            Het Planner Systeem bestaat uit twee hoofdonderdelen die samenwerken om je evenementen te beheren:
+        </p>
+        <ul>
+            <li><strong>Editor</strong> (<code>editor.html</code>) - Voor het maken en bewerken van je planning gegevens</li>
+            <li><strong>Planner</strong> (<code>planner.html</code>) - Voor het genereren van ICS kalenderbestanden</li>
+        </ul>
+        
+        <div class="info">
+            <strong>💡 Tip:</strong> Begin altijd met de Editor om je gegevens te maken of te bewerken, en gebruik daarna de Planner om je kalenderbestand te genereren.
+        </div>
+        
+        <h2> De Editor Gebruiken</h2>
+        <p>
+            De Editor is een gebruiksvriendelijke interface om je planning gegevens te beheren.
+        </p>
+        
+        <h3>Een nieuw JSON bestand maken</h3>
+        <div class="step">
+            <span class="step-number">1</span>
+            Open <code>editor.html</code> in je browser
+        </div>
+        <div class="step">
+            <span class="step-number">2</span>
+            Klik op <strong>"➕ Nieuwe Gebeurtenis"</strong> om een gebeurtenis toe te voegen
+        </div>
+        <div class="step">
+            <span class="step-number">3</span>
+            Vul alle velden in:
+            <ul style="margin-top: 10px;">
+                <li><strong>Dagen op voorhand:</strong> Hoeveel dagen vóór je hoofddatum deze gebeurtenis plaatsvindt</li>
+                <li><strong>Activiteit naam:</strong> De naam van de gebeurtenis</li>
+                <li><strong>Start uur:</strong> Wanneer de gebeurtenis begint (optioneel - laat leeg voor hele dag)</li>
+                <li><strong>Eind uur:</strong> Wanneer de gebeurtenis eindigt (optioneel - laat leeg voor hele dag)</li>
+                <li><strong>Beschrijving:</strong> Extra details over de gebeurtenis (optioneel)</li>
+            </ul>
+        </div>
+        <div class="step">
+            <span class="step-number">4</span>
+            Klik op <strong>"✓ Opslaan"</strong> om de gebeurtenis op te slaan
+        </div>
+        <div class="step">
+            <span class="step-number">5</span>
+            Herhaal stap 2-4 voor alle gebeurtenissen
+        </div>
+        <div class="step">
+            <span class="step-number">6</span>
+            Klik op <strong>"💾 Opslaan als JSON"</strong> om je bestand te downloaden
+        </div>
+        
+        <h3>Een bestaand JSON bestand bewerken</h3>
+        <div class="step">
+            <span class="step-number">1</span>
+            Open <code>editor.html</code> in je browser
+        </div>
+        <div class="step">
+            <span class="step-number">2</span>
+            Klik op <strong>"Choose File"</strong> en selecteer je JSON bestand (bijv. <code>data.json</code>)
+        </div>
+        <div class="step">
+            <span class="step-number">3</span>
+            Alle gebeurtenissen worden nu weergegeven
+        </div>
+        <div class="step">
+            <span class="step-number">4</span>
+            Gebruik de knoppen om gebeurtenissen te beheren:
+            <ul style="margin-top: 10px;">
+                <li><strong>✎ Bewerken:</strong> Wijzig de gegevens van een gebeurtenis</li>
+                <li><strong>🗑 Verwijderen:</strong> Verwijder een gebeurtenis (met bevestiging)</li>
+                <li><strong>↑ / ↓:</strong> Verplaats gebeurtenissen omhoog of omlaag</li>
+            </ul>
+        </div>
+        <div class="step">
+            <span class="step-number">5</span>
+            Klik op <strong>"💾 Opslaan als JSON"</strong> om je wijzigingen te downloaden
+        </div>
+        
+        <div class="tip">
+            <strong>💡 Tip:</strong> Je kunt meerdere regels in de beschrijving gebruiken. Deze worden automatisch correct geformatteerd in zowel de preview als in je kalender.
+        </div>
+        
+        <h2>📅 De Planner Gebruiken</h2>
+        <p>
+            Met de Planner genereer je ICS kalenderbestanden die je kunt importeren in elke kalender applicatie (Google Calendar, Apple Calendar, Outlook, etc.).
+        </p>
+        
+        <h3>Een ICS bestand genereren</h3>
+        <div class="step">
+            <span class="step-number">1</span>
+            Open <code>planner.html</code> in je browser
+        </div>
+        <div class="step">
+            <span class="step-number">2</span>
+            Klik op <strong>"Choose File"</strong> en selecteer je JSON bestand
+        </div>
+        <div class="step">
+            <span class="step-number">3</span>
+            Selecteer de <strong>hoofddatum</strong> (startdatum van je evenement)
+            <div class="info" style="margin-top: 10px;">
+                <strong>ℹ️ Belangrijk:</strong> Dit is de datum waarop je evenement plaatsvindt. Alle gebeurtenissen worden automatisch berekend als: hoofddatum - dagen_op_voorhand.
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-number">4</span>
+            Klik op <strong>"Genereer ICS Bestand"</strong>
+        </div>
+        <div class="step">
+            <span class="step-number">5</span>
+            Een preview van alle gebeurtenissen verschijnt op het scherm
+        </div>
+        <div class="step">
+            <span class="step-number">6</span>
+            Het ICS bestand wordt automatisch gedownload
+        </div>
+        
+        <h3>Het ICS bestand importeren</h3>
+        <p>
+            Na het downloaden kun je het ICS bestand importeren in je kalender applicatie:
+        </p>
+        
+        <h4>Google Calendar</h4>
+        <ol>
+            <li>Open Google Calendar</li>
+            <li>Klik op het tandwiel (⚙️) → "Instellingen"</li>
+            <li>Klik op "Importeren en exporteren"</li>
+            <li>Klik op "Bestand selecteren op je computer"</li>
+            <li>Selecteer het gedownloade ICS bestand</li>
+            <li>Kies in welke kalender je wilt importeren</li>
+            <li>Klik op "Importeren"</li>
+        </ol>
+        
+        <h4>Apple Calendar (macOS/iOS)</h4>
+        <ol>
+            <li>Dubbelklik op het gedownloade ICS bestand</li>
+            <li>Calendar opent automatisch</li>
+            <li>Kies in welke kalender je wilt importeren</li>
+            <li>Klik op "OK"</li>
+        </ol>
+        
+        <h4>Outlook</h4>
+        <ol>
+            <li>Open Outlook</li>
+            <li>Ga naar "Bestand" → "Openen en exporteren" → "Importeren/exporteren"</li>
+            <li>Selecteer "Een iCalendar- of vCalendar-bestand importeren (.ics)"</li>
+            <li>Blader naar het ICS bestand en selecteer het</li>
+            <li>Klik op "OK"</li>
+        </ol>
+        
+        <h2>💡 Praktische Voorbeelden</h2>
+        
+        <h3>Voorbeeld 1: Eenvoudige Verjaardagsplanning</h3>
+        <p>
+            Je organiseert een verjaardagsfeest op 20 december 2025. Je wilt 14 dagen van tevoren uitnodigingen versturen en 3 dagen van tevoren de zaal klaarzetten.
+        </p>
+        
+        <p><strong>Stappen in de Editor:</strong></p>
+        <ol>
+            <li>Maak een nieuwe gebeurtenis: "Uitnodigingen versturen", 14 dagen op voorhand, hele dag</li>
+            <li>Maak een nieuwe gebeurtenis: "Zaal voorbereiden", 3 dagen op voorhand, 14:00 - 17:00</li>
+            <li>Maak een nieuwe gebeurtenis: "Verjaardagsfeest", 0 dagen op voorhand, 19:00 - 23:00</li>
+            <li>Sla het bestand op als JSON</li>
+        </ol>
+        
+        <p><strong>In de Planner:</strong></p>
+        <p>
+            Selecteer <strong>20 december 2025</strong> als hoofddatum. De gebeurtenissen worden gepland op:
+        </p>
+        <ul>
+            <li>6 december: Uitnodigingen versturen (hele dag)</li>
+            <li>17 december: Zaal voorbereiden (14:00 - 17:00)</li>
+            <li>20 december: Verjaardagsfeest (19:00 - 23:00)</li>
+        </ul>
+        
+        <h3>Voorbeeld 2: Evenement met Meerdere Voorbereidingen</h3>
+        <p>
+            Een groot evenement met verschillende voorbereidingstaken over een langere periode.
+        </p>
+        
+        <p><strong>Gebeurtenissen in de Editor aanmaken:</strong></p>
+        <ul>
+            <li>30 dagen op voorhand: Locatie boeken (hele dag)</li>
+            <li>21 dagen op voorhand: Catering regelen (10:00 - 12:00)</li>
+            <li>14 dagen op voorhand: Marketing start (hele dag)</li>
+            <li>7 dagen op voorhand: Laatste check (09:00 - 17:00)</li>
+            <li>1 dag op voorhand: Opbouw (08:00 - 18:00)</li>
+            <li>0 dagen op voorhand: Evenement (10:00 - 22:00)</li>
+        </ul>
+        
+        <div class="tip">
+            <strong>💡 Tip:</strong> Gebruik het beschrijving veld voor belangrijke details zoals contactpersonen, checklists, of specifieke instructies.
+        </div>
+        
+        <h2>⚠️ Veelvoorkomende Problemen</h2>
+        
+        <div class="warning">
+            <strong>⚠️ Probleem:</strong> "Selecteer eerst een JSON bestand!"<br>
+            <strong>Oplossing:</strong> Je moet eerst een JSON bestand selecteren voordat je een ICS bestand kunt genereren.
+        </div>
+        
+        <div class="warning">
+            <strong>⚠️ Probleem:</strong> "Fout bij het laden van het bestand"<br>
+            <strong>Oplossing:</strong> Het bestand is mogelijk beschadigd. Maak een nieuw bestand aan met de Editor.
+        </div>
+        
+        <div class="warning">
+            <strong>⚠️ Probleem:</strong> Tijd wordt niet correct weergegeven in kalender<br>
+            <strong>Oplossing:</strong> Zorg dat tijden in 24-uurs formaat zijn (HH:MM), bijvoorbeeld "14:00" in plaats van "2:00 PM".
+        </div>
+        
+        <div class="warning">
+            <strong>⚠️ Probleem:</strong> Gebeurtenis is een hele dag terwijl ik tijden heb ingevuld<br>
+            <strong>Oplossing:</strong> Zowel start_uur als eind_uur moeten ingevuld zijn. Als één van beide leeg is, wordt het een hele dag gebeurtenis.
+        </div>
+        
+        <h2>🎯 Best Practices</h2>
+        
+        <div class="tip">
+            <strong>✅ Gebruik duidelijke namen</strong><br>
+            Geef gebeurtenissen beschrijvende namen zodat je in één oogopslag weet wat er moet gebeuren.
+        </div>
+        
+        <div class="tip">
+            <strong>✅ Voeg beschrijvingen toe</strong><br>
+            Gebruik het beschrijving veld voor belangrijke details, contactinformatie, of checklists.
+        </div>
+        
+        <div class="tip">
+            <strong>✅ Werk chronologisch</strong><br>
+            Sorteer je gebeurtenissen van ver naar dichtbij (hoogste naar laagste "dagen_op_voorhand").
+        </div>
+        
+        <div class="tip">
+            <strong>✅ Maak backups</strong><br>
+            Bewaar kopieën van je JSON bestanden zodat je altijd terug kunt naar een eerdere versie.
+        </div>
+        
+        <div class="tip">
+            <strong>✅ Test voor je importeert</strong><br>
+            Controleer de preview in de Planner voordat je het ICS bestand importeert in je hoofdkalender.
+        </div>
+        
+        <h2>🔧 Technische Informatie</h2>
+        
+        <h3>Browser Compatibiliteit</h3>
+        <p>
+            Het Planner Systeem werkt in alle moderne browsers:
+        </p>
+        <ul>
+            <li>Google Chrome (aanbevolen)</li>
+            <li>Mozilla Firefox</li>
+            <li>Safari</li>
+            <li>Microsoft Edge</li>
+        </ul>
+        
+        <h3>Privacy & Gegevens</h3>
+        <div class="info">
+            <strong>🔒 Privacy:</strong> Al je gegevens blijven lokaal op je computer. Er wordt niets naar een server gestuurd. Alles werkt volledig offline in je browser.
+        </div>
+        
+        <h2>📞 Extra Hulp</h2>
+        <p>
+            Heb je nog vragen of problemen? Controleer of:
+        </p>
+        <ul>
+            <li>Je browser up-to-date is</li>
+            <li>JavaScript is ingeschakeld in je browser</li>
+            <li>Je het juiste bestand hebt geselecteerd</li>
+            <li>Alle verplichte velden in de Editor zijn ingevuld</li>
+        </ul>
+        
+        <div class="files-section">
+            <h3>Begin Nu!</h3>
+            <p style="margin-bottom: 20px;">Klaar om te beginnen? Open een van de tools:</p>
+            <a href="editor.html" class="file-link">📝 Open Editor</a>
+            <a href="planner.html" class="file-link">📅 Open Planner</a>
+        </div>
+        </div>
+    </div>
+</body>
+</html>
